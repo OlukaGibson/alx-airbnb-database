@@ -1,4 +1,5 @@
--- Initial query with all details
+-- Analyze initial complex query with EXPLAIN
+EXPLAIN
 SELECT
     bookings.id AS booking_id,
     users.id AS user_id,
@@ -14,8 +15,10 @@ FROM
     bookings
 JOIN users ON bookings.user_id = users.id
 JOIN properties ON bookings.property_id = properties.id
-JOIN payments ON bookings.id = payments.booking_id;
-
+JOIN payments ON bookings.id = payments.booking_id
+WHERE
+    payments.status = 'completed'
+    AND bookings.start_date >= '2024-01-01';
 
 -- Optimized version of the above query
 SELECT
@@ -30,5 +33,7 @@ FROM
     bookings b
 JOIN users u ON b.user_id = u.id
 JOIN properties p ON b.property_id = p.id
-JOIN payments pm ON b.id = pm.booking_id;
-
+JOIN payments pm ON b.id = pm.booking_id
+WHERE
+    pm.status = 'completed'
+    AND b.start_date >= '2024-01-01';
