@@ -18,3 +18,15 @@ CREATE INDEX idx_reviews_property_id ON reviews(property_id);
 
 -- Index on reviews.rating (used in filtering and aggregation)
 CREATE INDEX idx_reviews_rating ON reviews(rating);
+
+-- Analyze performance: Query before/after indexes
+EXPLAIN ANALYZE
+SELECT
+    u.id,
+    u.name,
+    COUNT(b.id) AS total_bookings
+FROM
+    users u
+JOIN bookings b ON u.id = b.user_id
+GROUP BY
+    u.id;
